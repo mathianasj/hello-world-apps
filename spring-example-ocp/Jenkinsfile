@@ -58,6 +58,7 @@ node('skopeo-pod') {
         openshiftVerifyDeployment depCfg: '${appName}', namespace: '${devProjectName}', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
         openshiftVerifyService namespace: '${devProjectName}', svcName: 'tasks', verbose: 'false'
       }
+    }
 }
 
 // Convenience Functions to read version from the pom.xml
