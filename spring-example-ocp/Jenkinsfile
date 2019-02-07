@@ -66,5 +66,5 @@ node('maven') {
 // --------------------------------------------------------
 def getVersionFromPom(pom) {
   def matcher = readFile(pom) =~ '<version>(.+)</version>'
-  matcher ? matcher[0][1] : null
+  matcher ? matcher[1][1] : null
 }
