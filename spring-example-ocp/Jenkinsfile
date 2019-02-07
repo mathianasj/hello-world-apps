@@ -1,0 +1,69 @@
+#!groovy
+node('skopeo-pod') {
+    def mvnCmd = "mvn"
+
+    // Checkout Source Code.
+    stage('Checkout Source') {
+      checkout scm
+    }
+
+    // Build the Tasks Service
+    dir('spring-example-ocp') {
+      // The following variables need to be defined at the top level
+      // and not inside the scope of a stage - otherwise they would not
+      // be accessible from other stages.
+      // Extract version from the pom.xml
+      def version = getVersionFromPom("pom.xml")
+      def artifactId = 'spring-example-ocp'
+      def appName = 'spring-example-ocp'
+      def devProjectName = '${appName}-dev'
+
+      // TBD Set the tag for the development image: version + build number
+      def devTag  = "${version}-${BUILD_NUMBER}"
+      // Set the tag for the production image: version
+      def prodTag = "${version}"
+
+      // Using Maven build the war file
+      // Do not run tests in this step
+      stage('Build jar') {
+        echo "Building version ${devTag}"
+        sh "${mvnCmd} clean package -DskipTests"
+      }
+
+      // TBD: The next two stages should run in parallel
+
+      // Using Maven run the unit tests
+      stage('Unit Tests') {
+        echo "Running Unit Tests"
+        sh "${mvnCmd} test"
+      }
+
+      // Build the OpenShift Image in OpenShift and tag it.
+      stage('Build and Tag OpenShift Image') {
+        echo "Building OpenShift container image tasks:${devTag}"
+        sh "oc start-build ${appName} --follow --from-file=target/${artifactId}-${version}.jar -n ${devProjectName}"
+
+        openshiftTag alias: 'false', destStream: '${appName}', destTag: devTag, destinationNamespace: '${devProjectName}', namespace: '${devProjectName}', srcStream: '${appName}', srcTag: 'latest', verbose: 'false'
+      }
+
+      // Deploy the built image to the Development Environment.
+      stage('Deploy to Dev') {
+        echo "Deploying container image to Development Project"
+
+        // Update the Image on the Development Deployment Config
+        sh "oc set image dc/${appName} tasks=docker-registry.default.svc:5000/${devProjectName}/${appName}:${devTag} -n ${devProjectName}"
+
+        // Deploy the development application.
+        openshiftDeploy depCfg: '${appName}', namespace: '${devProjectName}', verbose: 'false', waitTime: '', waitUnit: 'sec'
+        openshiftVerifyDeployment depCfg: '${appName}', namespace: '${devProjectName}', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
+        openshiftVerifyService namespace: '${devProjectName}', svcName: 'tasks', verbose: 'false'
+      }
+}
+
+// Convenience Functions to read version from the pom.xml
+// Do not change anything below this line.
+// --------------------------------------------------------
+def getVersionFromPom(pom) {
+  def matcher = readFile(pom) =~ '<version>(.+)</version>'
+  matcher ? matcher[0][1] : null
+}
