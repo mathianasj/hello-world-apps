@@ -1,5 +1,5 @@
 #!groovy
-node('skopeo-pod') {
+node('maven') {
     def mvnCmd = "mvn"
 
     // Checkout Source Code.
