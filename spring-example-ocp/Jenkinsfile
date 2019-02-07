@@ -16,7 +16,7 @@ node('maven') {
       def version = getVersionFromPom("pom.xml")
       def artifactId = 'spring-example-ocp'
       def appName = 'spring-example-ocp'
-      def devProjectName = '${appName}-dev'
+      def devProjectName = "${appName}-dev"
 
       // TBD Set the tag for the development image: version + build number
       def devTag  = "${version}-${BUILD_NUMBER}"
@@ -43,7 +43,7 @@ node('maven') {
         echo "Building OpenShift container image tasks:${devTag}"
         sh "oc start-build ${appName} --follow --from-file=target/${artifactId}-${version}.jar -n ${devProjectName}"
 
-        openshiftTag alias: 'false', destStream: '${appName}', destTag: devTag, destinationNamespace: '${devProjectName}', namespace: '${devProjectName}', srcStream: '${appName}', srcTag: 'latest', verbose: 'false'
+        openshiftTag alias: 'false', destStream: "${appName}", destTag: devTag, destinationNamespace: "${devProjectName}", namespace: "${devProjectName}", srcStream: "${appName}", srcTag: 'latest', verbose: 'false'
       }
 
       // Deploy the built image to the Development Environment.
@@ -54,9 +54,9 @@ node('maven') {
         sh "oc set image dc/${appName} tasks=docker-registry.default.svc:5000/${devProjectName}/${appName}:${devTag} -n ${devProjectName}"
 
         // Deploy the development application.
-        openshiftDeploy depCfg: '${appName}', namespace: '${devProjectName}', verbose: 'false', waitTime: '', waitUnit: 'sec'
-        openshiftVerifyDeployment depCfg: '${appName}', namespace: '${devProjectName}', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
-        openshiftVerifyService namespace: '${devProjectName}', svcName: 'tasks', verbose: 'false'
+        openshiftDeploy depCfg: "${appName}", namespace: "${devProjectName}", verbose: 'false', waitTime: '', waitUnit: 'sec'
+        openshiftVerifyDeployment depCfg: "${appName}", namespace: "${devProjectName}", replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
+        openshiftVerifyService namespace: "${devProjectName}", svcName: 'tasks', verbose: 'false'
       }
     }
 }
