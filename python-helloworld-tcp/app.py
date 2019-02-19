@@ -22,7 +22,7 @@ def listen():
 
             elif data:
                 current_connection.send(data)
-                print data
+                print(data)
 
 
 if __name__ == "__main__":
