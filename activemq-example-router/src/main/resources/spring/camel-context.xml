@@ -27,12 +27,12 @@
             <log id="route-log" message=">>> ${body}"/>
         </route>
         
-        <route id="simple-route">
-            <from id="_to1" uri="netty4:tcp://0.0.0.0:5556?textline=true&amp;disconnect=true"/>
-            <setBody id="route-setBody">
+        <route id="unsecure-tcp-echo">
+            <from id="_unsecureTo1" uri="netty4:tcp://0.0.0.0:5556?textline=true&amp;disconnect=true"/>
+            <setBody id="unsecure-setBody">
                 <simple>Hello World from camel-context.xml not secure</simple>
             </setBody>
-            <log id="route-log" message=">>> ${body}"/>
+            <log id="unsecure-log" message=">>> ${body}"/>
         </route>
     </camelContext>
 </beans>
