@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+    ">
+    
+    <camel:sslContextParameters id="sslContextParameters">
+		    <camel:keyManagers keyPassword="opo123">
+		        <camel:keyStore type="JKS" resource="certB.jks"
+		            password="opo123" />
+		    </camel:keyManagers>
+		    <camel:trustManagers>
+		        <camel:keyStore type="JKS" resource="certB.jks"
+		            password="opo123" />
+		    </camel:trustManagers>
+		</camel:sslContextParameters>
+    
+  <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <route id="simple-route">
+            <from id="_to1" uri="netty4:tcp://localhost:5555?textline=true&amp;disconnect=true&amp;ssl=true&amp;sslContextParameters=#sslContextParameters"/>
+            <setBody id="route-setBody">
+                <simple>Hello World from camel-context.xml</simple>
+            </setBody>
+            <log id="route-log" message=">>> ${body}"/>
+        </route>
+    </camelContext>
+</beans>
