@@ -23,6 +23,9 @@ def listen():
             elif data:
                 current_connection.send(data)
                 print(data)
+                current_connection.shutdown(1)
+                current_connection.close()
+                break
 
 
 if __name__ == "__main__":
