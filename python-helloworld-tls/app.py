@@ -6,7 +6,7 @@ def listen():
     server_socket=socket(AF_INET, SOCK_STREAM)
 
     #Bind to an unused port on the local machine
-    server_socket.bind(('localhost',6668))
+    server_socket.bind(('localhost',8080))
 
     #listen for connection
     server_socket.listen (1)
