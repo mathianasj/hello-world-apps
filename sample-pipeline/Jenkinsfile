@@ -6,20 +6,22 @@ node('maven') {
     stage('Checkout Source') {
         checkout scm
     }
+    
+    dir("sample-pipeline") {
+        stage('Build in dev') {
+            // switch to dev project
+            sh "oc project ${projectPrefix}-dev"
 
-    stage('Build in dev') {
-        // switch to dev project
-        sh "oc project ${projectPrefix}-dev"
+            // build maven
+            sh 'mvn clean package'
 
-        // build maven
-        sh 'mvn clean package'
+            // run build
+            sh "mvn fabric8:build"
+        }
 
-        // run build
-        sh "mvn fabric8:build"
-    }
-
-    stage('Deploy to dev') {
-        // trigger deploy
-        sh "mvn fabric8:deploy"
+        stage('Deploy to dev') {
+            // trigger deploy
+            sh "mvn fabric8:deploy"
+        }
     }
 }
