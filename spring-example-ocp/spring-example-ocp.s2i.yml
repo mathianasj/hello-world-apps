@@ -1,0 +1,522 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      openshift.io/deployment-config.latest-version: "1"
+      openshift.io/deployment-config.name: hello-world-apps
+      openshift.io/deployment.name: hello-world-apps-1
+      openshift.io/generated-by: OpenShiftNewApp
+      openshift.io/scc: anyuid
+    creationTimestamp: 2019-02-07T14:14:51Z
+    generateName: hello-world-apps-1-
+    labels:
+      app: hello-world-apps
+      deployment: hello-world-apps-1
+      deploymentconfig: hello-world-apps
+    name: hello-world-apps-1-glsr7
+    namespace: myproject
+    ownerReferences:
+    - apiVersion: v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicationController
+      name: hello-world-apps-1
+      uid: badebcb4-2ae2-11e9-98b0-5254002b4feb
+    resourceVersion: "4395"
+    selfLink: /api/v1/namespaces/myproject/pods/hello-world-apps-1-glsr7
+    uid: bbc0a2c5-2ae2-11e9-98b0-5254002b4feb
+  spec:
+    containers:
+    - image: 172.30.1.1:5000/myproject/hello-world-apps@sha256:d69d93a74f0ccee6cd43089ab3c36da3074d02b586b3bdc4559dbea4fe16a97e
+      imagePullPolicy: Always
+      name: hello-world-apps
+      ports:
+      - containerPort: 8778
+        protocol: TCP
+      - containerPort: 8080
+        protocol: TCP
+      - containerPort: 8443
+        protocol: TCP
+      resources: {}
+      securityContext:
+        capabilities:
+          drop:
+          - MKNOD
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: default-token-9grtj
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    imagePullSecrets:
+    - name: default-dockercfg-sxbq2
+    nodeName: localhost
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      seLinuxOptions:
+        level: s0:c12,c4
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    volumes:
+    - name: default-token-9grtj
+      secret:
+        defaultMode: 420
+        secretName: default-token-9grtj
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: 2019-02-07T14:14:51Z
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: 2019-02-07T14:14:53Z
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: null
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: 2019-02-07T14:14:51Z
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://e68ead2c0d2b9c70377021d6f93d2e015650c57a786e2b7ae1b4e16f971bbf42
+      image: 172.30.1.1:5000/myproject/hello-world-apps:latest
+      imageID: docker-pullable://172.30.1.1:5000/myproject/hello-world-apps@sha256:d69d93a74f0ccee6cd43089ab3c36da3074d02b586b3bdc4559dbea4fe16a97e
+      lastState: {}
+      name: hello-world-apps
+      ready: true
+      restartCount: 0
+      state:
+        running:
+          startedAt: 2019-02-07T14:14:52Z
+    hostIP: 192.168.122.208
+    phase: Running
+    podIP: 172.17.0.9
+    qosClass: BestEffort
+    startTime: 2019-02-07T14:14:51Z
+- apiVersion: v1
+  kind: ReplicationController
+  metadata:
+    annotations:
+      openshift.io/deployer-pod.completed-at: 2019-02-07 14:14:53 +0000 UTC
+      openshift.io/deployer-pod.created-at: 2019-02-07 14:14:49 +0000 UTC
+      openshift.io/deployer-pod.name: hello-world-apps-1-deploy
+      openshift.io/deployment-config.latest-version: "1"
+      openshift.io/deployment-config.name: hello-world-apps
+      openshift.io/deployment.phase: Complete
+      openshift.io/deployment.replicas: "1"
+      openshift.io/deployment.status-reason: config change
+      openshift.io/encoded-deployment-config: |
+        {"kind":"DeploymentConfig","apiVersion":"apps.openshift.io/v1","metadata":{"name":"hello-world-apps","namespace":"myproject","selfLink":"/apis/apps.openshift.io/v1/namespaces/myproject/deploymentconfigs/hello-world-apps","uid":"6d5bb5bd-2ae2-11e9-807e-5254002b4feb","resourceVersion":"4345","generation":2,"creationTimestamp":"2019-02-07T14:12:39Z","labels":{"app":"hello-world-apps"},"annotations":{"openshift.io/generated-by":"OpenShiftNewApp"}},"spec":{"strategy":{"type":"Rolling","rollingParams":{"updatePeriodSeconds":1,"intervalSeconds":1,"timeoutSeconds":600,"maxUnavailable":"25%","maxSurge":"25%"},"resources":{},"activeDeadlineSeconds":21600},"triggers":[{"type":"ConfigChange"},{"type":"ImageChange","imageChangeParams":{"automatic":true,"containerNames":["hello-world-apps"],"from":{"kind":"ImageStreamTag","namespace":"myproject","name":"hello-world-apps:latest"},"lastTriggeredImage":"172.30.1.1:5000/myproject/hello-world-apps@sha256:d69d93a74f0ccee6cd43089ab3c36da3074d02b586b3bdc4559dbea4fe16a97e"}}],"replicas":1,"revisionHistoryLimit":10,"test":false,"selector":{"app":"hello-world-apps","deploymentconfig":"hello-world-apps"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"hello-world-apps","deploymentconfig":"hello-world-apps"},"annotations":{"openshift.io/generated-by":"OpenShiftNewApp"}},"spec":{"containers":[{"name":"hello-world-apps","image":"172.30.1.1:5000/myproject/hello-world-apps@sha256:d69d93a74f0ccee6cd43089ab3c36da3074d02b586b3bdc4559dbea4fe16a97e","ports":[{"containerPort":8778,"protocol":"TCP"},{"containerPort":8080,"protocol":"TCP"},{"containerPort":8443,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"Always"}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}}},"status":{"latestVersion":1,"observedGeneration":1,"replicas":0,"updatedReplicas":0,"availableReplicas":0,"unavailableReplicas":0,"details":{"message":"config change","causes":[{"type":"ConfigChange"}]},"conditions":[{"type":"Available","status":"False","lastUpdateTime":"2019-02-07T14:12:39Z","lastTransitionTime":"2019-02-07T14:12:39Z","message":"Deployment config does not have minimum availability."}]}}
+    creationTimestamp: 2019-02-07T14:14:49Z
+    generation: 2
+    labels:
+      app: hello-world-apps
+      openshift.io/deployment-config.name: hello-world-apps
+    name: hello-world-apps-1
+    namespace: myproject
+    ownerReferences:
+    - apiVersion: apps.openshift.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DeploymentConfig
+      name: hello-world-apps
+      uid: 6d5bb5bd-2ae2-11e9-807e-5254002b4feb
+    resourceVersion: "4404"
+    selfLink: /api/v1/namespaces/myproject/replicationcontrollers/hello-world-apps-1
+    uid: badebcb4-2ae2-11e9-98b0-5254002b4feb
+  spec:
+    replicas: 1
+    selector:
+      app: hello-world-apps
+      deployment: hello-world-apps-1
+      deploymentconfig: hello-world-apps
+    template:
+      metadata:
+        annotations:
+          openshift.io/deployment-config.latest-version: "1"
+          openshift.io/deployment-config.name: hello-world-apps
+          openshift.io/deployment.name: hello-world-apps-1
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: hello-world-apps
+          deployment: hello-world-apps-1
+          deploymentconfig: hello-world-apps
+      spec:
+        containers:
+        - image: 172.30.1.1:5000/myproject/hello-world-apps@sha256:d69d93a74f0ccee6cd43089ab3c36da3074d02b586b3bdc4559dbea4fe16a97e
+          imagePullPolicy: Always
+          name: hello-world-apps
+          ports:
+          - containerPort: 8778
+            protocol: TCP
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 8443
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: 2019-02-07T14:12:39Z
+    labels:
+      app: hello-world-apps
+    name: hello-world-apps
+    namespace: myproject
+    resourceVersion: "3789"
+    selfLink: /api/v1/namespaces/myproject/services/hello-world-apps
+    uid: 6d5d22b1-2ae2-11e9-98b0-5254002b4feb
+  spec:
+    clusterIP: 172.30.33.155
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    - name: 8443-tcp
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
+    - name: 8778-tcp
+      port: 8778
+      protocol: TCP
+      targetPort: 8778
+    selector:
+      app: hello-world-apps
+      deploymentconfig: hello-world-apps
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: 2019-02-07T14:12:39Z
+    generation: 2
+    labels:
+      app: hello-world-apps
+    name: hello-world-apps
+    namespace: myproject
+    resourceVersion: "4406"
+    selfLink: /apis/apps.openshift.io/v1/namespaces/myproject/deploymentconfigs/hello-world-apps
+    uid: 6d5bb5bd-2ae2-11e9-807e-5254002b4feb
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      app: hello-world-apps
+      deploymentconfig: hello-world-apps
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: hello-world-apps
+          deploymentconfig: hello-world-apps
+      spec:
+        containers:
+        - image: 172.30.1.1:5000/myproject/hello-world-apps@sha256:d69d93a74f0ccee6cd43089ab3c36da3074d02b586b3bdc4559dbea4fe16a97e
+          imagePullPolicy: Always
+          name: hello-world-apps
+          ports:
+          - containerPort: 8778
+            protocol: TCP
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 8443
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - hello-world-apps
+        from:
+          kind: ImageStreamTag
+          name: hello-world-apps:latest
+          namespace: myproject
+        lastTriggeredImage: 172.30.1.1:5000/myproject/hello-world-apps@sha256:d69d93a74f0ccee6cd43089ab3c36da3074d02b586b3bdc4559dbea4fe16a97e
+      type: ImageChange
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: 2019-02-07T14:14:53Z
+      lastUpdateTime: 2019-02-07T14:14:53Z
+      message: Deployment config has minimum availability.
+      status: "True"
+      type: Available
+    - lastTransitionTime: 2019-02-07T14:14:54Z
+      lastUpdateTime: 2019-02-07T14:14:54Z
+      message: replication controller "hello-world-apps-1" successfully rolled out
+      reason: NewReplicationControllerAvailable
+      status: "True"
+      type: Progressing
+    details:
+      causes:
+      - type: ConfigChange
+      message: config change
+    latestVersion: 1
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    unavailableReplicas: 0
+    updatedReplicas: 1
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: 2019-02-07T14:12:39Z
+    labels:
+      app: hello-world-apps
+    name: hello-world-apps
+    namespace: myproject
+    resourceVersion: "3793"
+    selfLink: /apis/build.openshift.io/v1/namespaces/myproject/buildconfigs/hello-world-apps
+    uid: 6d59e88a-2ae2-11e9-807e-5254002b4feb
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: hello-world-apps:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      contextDir: spring-example-ocp
+      git:
+        uri: https://github.com/mathianasj/hello-world-apps
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: redhat-openjdk18-openshift:1.4
+          namespace: openshift
+      type: Source
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - github:
+        secret: BjuRmUsruDfcO4asEp8o
+      type: GitHub
+    - generic:
+        secret: sq-d_8Mb7lJMWFJ296sg
+      type: Generic
+    - type: ConfigChange
+    - imageChange:
+        lastTriggeredImageID: 172.30.1.1:5000/openshift/redhat-openjdk18-openshift@sha256:dc84fed0f6f40975a2277c126438c8aa15c70eeac75981dbaa4b6b853eff61a6
+      type: ImageChange
+  status:
+    lastVersion: 1
+- apiVersion: build.openshift.io/v1
+  kind: Build
+  metadata:
+    annotations:
+      openshift.io/build-config.name: hello-world-apps
+      openshift.io/build.number: "1"
+      openshift.io/build.pod-name: hello-world-apps-1-build
+    creationTimestamp: 2019-02-07T14:12:39Z
+    labels:
+      app: hello-world-apps
+      buildconfig: hello-world-apps
+      openshift.io/build-config.name: hello-world-apps
+      openshift.io/build.start-policy: Serial
+    name: hello-world-apps-1
+    namespace: myproject
+    ownerReferences:
+    - apiVersion: build.openshift.io/v1
+      controller: true
+      kind: BuildConfig
+      name: hello-world-apps
+      uid: 6d59e88a-2ae2-11e9-807e-5254002b4feb
+    resourceVersion: "4351"
+    selfLink: /apis/build.openshift.io/v1/namespaces/myproject/builds/hello-world-apps-1
+    uid: 6d7103c4-2ae2-11e9-807e-5254002b4feb
+  spec:
+    nodeSelector: null
+    output:
+      pushSecret:
+        name: builder-dockercfg-hsw99
+      to:
+        kind: ImageStreamTag
+        name: hello-world-apps:latest
+    postCommit: {}
+    resources: {}
+    revision:
+      git:
+        author:
+          email: jmathian@jmathian.remote.csb
+          name: Joshua Mathianas
+        commit: cd5c95f62e1d58c84fe55d648a7619aacc594139
+        committer:
+          email: jmathian@jmathian.remote.csb
+          name: Joshua Mathianas
+        message: create java hello world rest service with health endpoint
+      type: Git
+    serviceAccount: builder
+    source:
+      contextDir: spring-example-ocp
+      git:
+        uri: https://github.com/mathianasj/hello-world-apps
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: DockerImage
+          name: 172.30.1.1:5000/openshift/redhat-openjdk18-openshift@sha256:dc84fed0f6f40975a2277c126438c8aa15c70eeac75981dbaa4b6b853eff61a6
+        pullSecret:
+          name: builder-dockercfg-hsw99
+      type: Source
+    triggeredBy:
+    - message: Build configuration change
+  status:
+    completionTimestamp: 2019-02-07T14:14:49Z
+    config:
+      kind: BuildConfig
+      name: hello-world-apps
+      namespace: myproject
+    duration: 129000000000
+    output:
+      to:
+        imageDigest: sha256:d69d93a74f0ccee6cd43089ab3c36da3074d02b586b3bdc4559dbea4fe16a97e
+    outputDockerImageReference: 172.30.1.1:5000/myproject/hello-world-apps:latest
+    phase: Complete
+    stages:
+    - durationMilliseconds: 479
+      name: FetchInputs
+      startTime: 2019-02-07T14:12:48Z
+      steps:
+      - durationMilliseconds: 479
+        name: FetchGitSource
+        startTime: 2019-02-07T14:12:48Z
+    - durationMilliseconds: 942
+      name: CommitContainer
+      startTime: 2019-02-07T14:14:41Z
+      steps:
+      - durationMilliseconds: 942
+        name: CommitContainer
+        startTime: 2019-02-07T14:14:41Z
+    - durationMilliseconds: 83666
+      name: Assemble
+      startTime: 2019-02-07T14:13:19Z
+      steps:
+      - durationMilliseconds: 83666
+        name: AssembleBuildScripts
+        startTime: 2019-02-07T14:13:19Z
+    - durationMilliseconds: 6382
+      name: PushImage
+      startTime: 2019-02-07T14:14:42Z
+      steps:
+      - durationMilliseconds: 6382
+        name: PushImage
+        startTime: 2019-02-07T14:14:42Z
+    startTimestamp: 2019-02-07T14:12:40Z
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: 2019-02-07T14:12:39Z
+    generation: 1
+    labels:
+      app: hello-world-apps
+    name: hello-world-apps
+    namespace: myproject
+    resourceVersion: "4341"
+    selfLink: /apis/image.openshift.io/v1/namespaces/myproject/imagestreams/hello-world-apps
+    uid: 6d550f9f-2ae2-11e9-807e-5254002b4feb
+  spec:
+    lookupPolicy:
+      local: false
+  status:
+    dockerImageRepository: 172.30.1.1:5000/myproject/hello-world-apps
+    tags:
+    - items:
+      - created: 2019-02-07T14:14:49Z
+        dockerImageReference: 172.30.1.1:5000/myproject/hello-world-apps@sha256:d69d93a74f0ccee6cd43089ab3c36da3074d02b586b3bdc4559dbea4fe16a97e
+        generation: 1
+        image: sha256:d69d93a74f0ccee6cd43089ab3c36da3074d02b586b3bdc4559dbea4fe16a97e
+      tag: latest
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/host.generated: "true"
+    creationTimestamp: 2019-02-07T14:15:00Z
+    labels:
+      app: hello-world-apps
+    name: hello-world-apps
+    namespace: myproject
+    resourceVersion: "4432"
+    selfLink: /apis/route.openshift.io/v1/namespaces/myproject/routes/hello-world-apps
+    uid: c1252bf9-2ae2-11e9-807e-5254002b4feb
+  spec:
+    host: hello-world-apps-myproject.192.168.42.70.nip.io
+    port:
+      targetPort: 8080-tcp
+    to:
+      kind: Service
+      name: hello-world-apps
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: 2019-02-07T14:15:00Z
+        status: "True"
+        type: Admitted
+      host: hello-world-apps-myproject.192.168.42.70.nip.io
+      routerName: router
+      wildcardPolicy: None
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

@@ -1,0 +1,95 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: 2019-02-07T14:12:39Z
+  generation: 2
+  labels:
+    app: hello-world-apps
+  name: hello-world-apps
+  namespace: myproject
+  resourceVersion: "4406"
+  selfLink: /apis/apps.openshift.io/v1/namespaces/myproject/deploymentconfigs/hello-world-apps
+  uid: 6d5bb5bd-2ae2-11e9-807e-5254002b4feb
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    app: hello-world-apps
+    deploymentconfig: hello-world-apps
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        app: hello-world-apps
+        deploymentconfig: hello-world-apps
+    spec:
+      containers:
+      - image: 172.30.1.1:5000/myproject/hello-world-apps@sha256:d69d93a74f0ccee6cd43089ab3c36da3074d02b586b3bdc4559dbea4fe16a97e
+        imagePullPolicy: Always
+        name: hello-world-apps
+        ports:
+        - containerPort: 8778
+          protocol: TCP
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 8443
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - hello-world-apps
+      from:
+        kind: ImageStreamTag
+        name: hello-world-apps:latest
+        namespace: myproject
+      lastTriggeredImage: 172.30.1.1:5000/myproject/hello-world-apps@sha256:d69d93a74f0ccee6cd43089ab3c36da3074d02b586b3bdc4559dbea4fe16a97e
+    type: ImageChange
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: 2019-02-07T14:14:53Z
+    lastUpdateTime: 2019-02-07T14:14:53Z
+    message: Deployment config has minimum availability.
+    status: "True"
+    type: Available
+  - lastTransitionTime: 2019-02-07T14:14:54Z
+    lastUpdateTime: 2019-02-07T14:14:54Z
+    message: replication controller "hello-world-apps-1" successfully rolled out
+    reason: NewReplicationControllerAvailable
+    status: "True"
+    type: Progressing
+  details:
+    causes:
+    - type: ConfigChange
+    message: config change
+  latestVersion: 1
+  observedGeneration: 2
+  readyReplicas: 1
+  replicas: 1
+  unavailableReplicas: 0
+  updatedReplicas: 1
