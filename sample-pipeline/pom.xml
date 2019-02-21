@@ -81,7 +81,7 @@
 						<config>
 							<spring-boot>
 								<fromMode>istag</fromMode>
-								<from>openshift/redhat-openjdk18-openshift:1.4</from>
+								<from>redhat-openjdk18-openshift:1.4</from>
 							</spring-boot>
 						</config>
 					</generator>

@@ -1,22 +1,27 @@
 
 node('maven') {
-    def projectPrefix = "sample-pipeline"
+    dir('sampe-pipeline') {
+        def projectPrefix = "sample-pipeline"
 
-    // Checkout Source Code.
-    stage('Checkout Source') {
-        checkout scm
-    }
+        // Checkout Source Code.
+        stage('Checkout Source') {
+            checkout scm
+        }
 
-    stage('Build in dev') {
-        // switch to dev project
-        sh "oc project ${projectPrefix}-dev"
+        stage('Build in dev') {
+            // switch to dev project
+            sh "oc project ${projectPrefix}-dev"
 
-        // run build
-        sh "mvn fabric8:build"
-    }
+            // build maven
+            sh 'mvn clean package'
 
-    stage('Deploy to dev') {
-        // trigger deploy
-        sh "oc rollout latest dc/sample-pipeline"
+            // run build
+            sh "mvn fabric8:build"
+        }
+
+        stage('Deploy to dev') {
+            // trigger deploy
+            sh "mvn fabric8:deploy"
+        }
     }
 }
