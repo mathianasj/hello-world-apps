@@ -42,13 +42,11 @@ stage('Request Approval for Promotion to QA') {
     }
 }
 
-node('maven') {
-    stage('Checkout Source') {
-        checkout scm
-    }
-    
+node('maven') {    
     dir("sample-pipeline") {
         stage("Deploy to QA") {
+            checkout scm
+
             // switch to dev project
             sh "oc project ${projectPrefix}-qa"
     
@@ -70,13 +68,11 @@ stage('Request Approval for Promotion to PROD') {
     }
 }
 
-node('maven') {
-    stage('Checkout Source') {
-        checkout scm
-    }
-    
+node('maven') {    
     dir("sample-pipeline") {
         stage("Deploy to Prod") {
+            checkout scm
+
             // switch to dev project
             sh "oc project ${projectPrefix}-prod"
     
