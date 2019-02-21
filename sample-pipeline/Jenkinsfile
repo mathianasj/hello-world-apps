@@ -1,0 +1,17 @@
+
+node('skopeo-pod') {
+    def projectPrefix = "sample-pipeline"
+
+    // Checkout Source Code.
+    stage('Checkout Source') {
+        checkout scm
+    }
+
+    stage('Build in dev') {
+        // switch to dev project
+        sh "oc project ${projectPrefix}-dev"
+
+        // ru build
+        sh "mvn fabric8:build"
+    }
+}

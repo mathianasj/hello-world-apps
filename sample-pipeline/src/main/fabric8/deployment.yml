@@ -1,0 +1,32 @@
+spec:
+  template:
+    spec:
+      containers:
+        - 
+          resources:
+            requests:
+              cpu: "0.2"
+              memory: 256Mi
+            limits:
+              cpu: "1.0"
+              memory: 256Mi
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 180
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
