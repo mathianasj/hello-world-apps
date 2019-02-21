@@ -1,7 +1,6 @@
+def projectPrefix = "sample-pipeline"
 
 node('maven') {
-    def projectPrefix = "sample-pipeline"
-
     // Checkout Source Code.
     stage('Checkout Source') {
         checkout scm
@@ -21,6 +20,66 @@ node('maven') {
 
         stage('Deploy to dev') {
             // trigger deploy
+            sh "mvn fabric8:deploy"
+        }
+
+        stage('Integration test') {
+            echo "integration tests would be executed against dev here"
+        }
+    }
+}
+
+stage('Request Approval for Promotion to QA') {
+    try {
+        userInput = input(
+            id: 'Proceed to QA', message: 'Deploy to QA?', parameters: [
+            [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+            ])
+    } catch(err) { // input false
+        def user = err.getCauses()[0].getUser()
+        userInput = false
+        echo "Aborted by: [${user}]"
+    }
+}
+
+node('maven') {
+    stage('Checkout Source') {
+        checkout scm
+    }
+    
+    dir("sample-pipeline") {
+        stage("Deploy to QA") {
+            // switch to dev project
+            sh "oc project ${projectPrefix}-qa"
+    
+            sh "mvn fabric8:deploy"
+        }
+    }
+}
+
+stage('Request Approval for Promotion to PROD') {
+    try {
+        userInput = input(
+            id: 'Proceed to Prod', message: 'Deploy to Prod?', parameters: [
+            [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+            ])
+    } catch(err) { // input false
+        def user = err.getCauses()[0].getUser()
+        userInput = false
+        echo "Aborted by: [${user}]"
+    }
+}
+
+node('maven') {
+    stage('Checkout Source') {
+        checkout scm
+    }
+    
+    dir("sample-pipeline") {
+        stage("Deploy to Prod") {
+            // switch to dev project
+            sh "oc project ${projectPrefix}-prod"
+    
             sh "mvn fabric8:deploy"
         }
     }
