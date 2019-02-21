@@ -1,5 +1,5 @@
 
-node('skopeo-pod') {
+node('maven') {
     def projectPrefix = "sample-pipeline"
 
     // Checkout Source Code.
@@ -11,7 +11,12 @@ node('skopeo-pod') {
         // switch to dev project
         sh "oc project ${projectPrefix}-dev"
 
-        // ru build
+        // run build
         sh "mvn fabric8:build"
+    }
+
+    stage('Deploy to dev') {
+        // trigger deploy
+        sh "oc rollout latest dc/sample-pipeline"
     }
 }
