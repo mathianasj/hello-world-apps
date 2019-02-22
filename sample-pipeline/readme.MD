@@ -5,6 +5,7 @@
 1. Instantiate a jenkins in this new project (jenkins)
 
 ## Project setup and access setup
+```
 oc new-project sample-pipeline-dev
 oc policy add-role-to-user edit system:serviceaccount:sample-pipeline:jenkins -n sample-pipeline-dev
 oc policy add-role-to-user system:image-puller system:serviceaccount:sample-pipeline:default -n sample-pipeline-dev
@@ -12,6 +13,7 @@ oc new-project sample-pipeline-qa
 oc policy add-role-to-user edit system:serviceaccount:sample-pipeline:jenkins -n sample-pipeline-qa
 oc new-project sample-pipeline-prod
 oc policy add-role-to-user edit system:serviceaccount:sample-pipeline:jenkins -n sample-pipeline-prod
+```
 
 ## Jenkins service account external registry secret
 ```
