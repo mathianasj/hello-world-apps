@@ -24,7 +24,7 @@ node('maven') {
             sh 'mvn clean package'
 
             // run build
-            sh "mvn fabric8:build"
+            sh "mvn fabric8:build -e -X"
         }
 
         stage('Deploy to dev') {
