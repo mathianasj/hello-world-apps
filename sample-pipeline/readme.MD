@@ -12,6 +12,18 @@ oc policy add-role-to-user edit system:serviceaccount:sample-pipeline:jenkins -n
 oc new-project sample-pipeline-prod
 oc policy add-role-to-user edit system:serviceaccount:sample-pipeline:jenkins -n sample-pipeline-prod
 
+## Jenkins service account external registry secret
+```
+oc create secret docker-registry docker-registry-secret \
+--docker-server=<registry-server> \
+--docker-username=<registry-username> \
+--docker-password=<registry-password> \
+
+oc secrets link default docker-registry-secret --for=pull,mount
+
+oc secrets link builder docker-registry-secret
+```
+
 ## Jenkins Setup
 1. Login to the jenkins created in the jenkins project
 1. Click on "New Item"

@@ -1,4 +1,6 @@
 def projectPrefix = "sample-pipeline"
+def projectVersion = ""
+def projectRegistry = "docker.io/mathianasj"
 
 node('maven') {
     // Checkout Source Code.
@@ -7,6 +9,13 @@ node('maven') {
     }
     
     dir("sample-pipeline") {
+        stage('Get artifact version') {
+            projectVersion = sh(
+                script: "mvn -q -Dexec.executable=echo -Dexec.args='\${project.version}' --non-recursive exec:exec",
+                returnStdout: true
+            ).trim()
+        }
+
         stage('Build in dev') {
             // switch to dev project
             sh "oc project ${projectPrefix}-dev"
@@ -25,6 +34,10 @@ node('maven') {
 
         stage('Integration test') {
             echo "integration tests would be executed against dev here"
+        }
+
+        stage('Push to external registry') {
+            sh "oc image mirror ${projectPrefix}-dev/${projectPrefix}:latest ${projectRegistry}/${projectPrefix}:${projectVersion}-${env.BUILD_NUMBER}"
         }
     }
 }
@@ -47,7 +60,7 @@ node('maven') {
         stage("Deploy to QA") {
             checkout scm
 
-            // switch to dev project
+            // switch to qa project
             sh "oc project ${projectPrefix}-qa"
     
             sh "mvn fabric8:deploy"
@@ -73,7 +86,7 @@ node('maven') {
         stage("Deploy to Prod") {
             checkout scm
 
-            // switch to dev project
+            // switch to prod project
             sh "oc project ${projectPrefix}-prod"
     
             sh "mvn fabric8:deploy"
