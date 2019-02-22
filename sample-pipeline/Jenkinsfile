@@ -36,9 +36,11 @@ node('maven') {
             echo "integration tests would be executed against dev here"
         }
 
-        stage('Push to external registry') {
-            sh "oc image mirror ${projectPrefix}-dev/${projectPrefix}:latest ${projectRegistry}/${projectPrefix}:${projectVersion}-${env.BUILD_NUMBER}"
-        }
+        // stage('Push to external registry') {
+        //     sh "oc project"
+        //     sh "oc whoami"
+        //     sh "oc image mirror ${projectPrefix}-dev/${projectPrefix}:latest ${projectRegistry}/${projectPrefix}:${projectVersion}-${env.BUILD_NUMBER}"
+        // }
     }
 }
 
