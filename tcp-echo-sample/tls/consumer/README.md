@@ -1,8 +1,9 @@
-# Spring-Boot Camel QuickStart
+# Spring-Boot TLS and Unsecure TCP QuickStart
 
-This example demonstrates how you can use Apache Camel with Spring Boot.
+This example demonstrates how you can use Apache Camel to expose a TCP TLS and unsecure port on OpenShift
 
-The quickstart uses Spring Boot to configure a little application that includes a Camel route that triggers a message every 5th second, and routes the message to a log.
+### Notes
+The unsecure TCP port will not be exposed on OpenShift online as LoadBalancers are not enabled.
 
 ### Building
 
@@ -33,17 +34,12 @@ Then find the name of the pod that runs this quickstart, and output the logs fro
 You can also use the OpenShift [web console](https://docs.openshift.com/container-platform/3.3/getting_started/developers_console.html#developers-console-video) to manage the
 running pods, and view logs and much more.
 
-### Running via an S2I Application Template
+### Accessing the TCP TLS route
+1. Find the route to use ```oc get route echo $(oc get route/tls --template {{.spec.host}})```
+1. You can either use a web browser and go to https://${host-above} or use a TLS TCP client to see the output.  See the client in the parent folder as a sample.
 
-Application templates allow you deploy applications to OpenShift by filling out a form in the OpenShift console that allows you to adjust deployment parameters.  This template uses an S2I source build so that it handle building and deploying the application for you.
-
-First, import the Fuse image streams:
-
-    oc create -f https://raw.githubusercontent.com/jboss-fuse/application-templates/GA/fis-image-streams.json
-
-Then create the quickstart template:
-
-    oc create -f https://raw.githubusercontent.com/jboss-fuse/application-templates/GA/quickstarts/spring-boot-camel-template.json
-
-Now when you use "Add to Project" button in the OpenShift console, you should see a template for this quickstart. 
-
+### Accessing the Unsecure TCP NodePort
+This section requires your cluster admin to configure network routing and adding the generated ip address to the master.  See [here](https://docs.openshift.com/container-platform/3.11/dev_guide/expose_service/expose_internal_ip_load_balancer.html#load-balancer-ips-network) for documentation on configuring the OpenShift cluster
+1. Find the external ip ```oc get svc/tcp --template {{$.spec.externalIPs}}```
+1. Execute telnet $(ipFromAbove) 5556
+1. Type something and press enter it will echo it back
