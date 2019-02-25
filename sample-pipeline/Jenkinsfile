@@ -17,11 +17,11 @@ node('maven') {
         }
 
         stage('Build in dev') {
-            sh "ls /var/lib/origin/openshift.local.config/master"
-            sh "cat /var/lib/origin/openshift.local.config/master/admin.kubeconfig"
-            
             // switch to dev project
             sh "oc project ${projectPrefix}-dev"
+
+            sh "cat /var/lib/origin/openshift.local.config/master/admin.kubeconfig"
+            
 
             // build maven
             sh 'mvn clean package'
