@@ -1,0 +1,17 @@
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  - name: tls-tcp
+    port: 5555
+    protocol: TCP
+    targetPort: 5555
+  - name: tcp
+    port: 5556
+    protocol: TCP
+    targetPort: 5556
+  selector:
+    app: ${project.artifactId}
+  type: ClusterIP

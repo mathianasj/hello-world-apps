@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:camel="http://camel.apache.org/schema/spring"
-       xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
-    ">
-    
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd     ">
     <camel:sslContextParameters id="sslContextParameters">
-		    <camel:keyManagers keyPassword="opo123">
-		        <camel:keyStore type="JKS" resource="certB.jks"
-		            password="opo123" />
-		    </camel:keyManagers>
-		    <camel:trustManagers>
-		        <camel:keyStore type="JKS" resource="certB.jks"
-		            password="opo123" />
-		    </camel:trustManagers>
-		</camel:sslContextParameters>
-    
-  <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <camel:keyManagers keyPassword="opo123">
+            <camel:keyStore password="opo123" resource="certB.jks" type="JKS"/>
+        </camel:keyManagers>
+        <camel:trustManagers>
+            <camel:keyStore password="opo123" resource="certB.jks" type="JKS"/>
+        </camel:trustManagers>
+    </camel:sslContextParameters>
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
         <route id="simple-route">
             <from id="_to1" uri="netty4:tcp://0.0.0.0:5555?textline=true&amp;disconnect=true&amp;ssl=true&amp;sslContextParameters=#sslContextParameters"/>
             <setBody id="route-setBody">
@@ -26,7 +18,6 @@
             </setBody>
             <log id="route-log" message=">>> ${body}"/>
         </route>
-        
         <route id="unsecure-tcp-echo">
             <from id="_unsecureTo1" uri="netty4:tcp://0.0.0.0:5556?textline=true&amp;disconnect=true"/>
             <setBody id="unsecure-setBody">

@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: Service
+spec:
+  ports:
+  - name: tcp
+    port: 5556 
+  type: NodePort 
+  selector:
+    name: ${project.artifactId}
