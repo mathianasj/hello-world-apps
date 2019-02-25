@@ -39,7 +39,7 @@ running pods, and view logs and much more.
 1. You can either use a web browser and go to https://${host-above} or use a TLS TCP client to see the output.  See the client in the parent folder as a sample.
 
 ### Accessing the Unsecure TCP NodePort
-This section requires your cluster admin to configure network routing and adding the generated ip address to the master.  See [here](https://docs.openshift.com/container-platform/3.11/dev_guide/expose_service/expose_internal_ip_load_balancer.html#load-balancer-ips-network) for documentation on configuring the OpenShift cluster
-1. Find the external ip ```oc get svc/tcp --template {{$.spec.externalIPs}}```
-1. Execute telnet $(ipFromAbove) 5556
+This section requires knowing a node's ip address.  Find it from your cluster admin, this needs to be the public ip (external to the cluster interface).  You could use an external load balancer to expose this port and balance it across all of the computer nodes in your cluster.
+
+1. Execute telnet $(ipFromAbove) 30556
 1. Type something and press enter it will echo it back

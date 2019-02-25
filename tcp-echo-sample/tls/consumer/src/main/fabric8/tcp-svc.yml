@@ -5,6 +5,7 @@ spec:
   ports:
   - name: tcp
     port: 5556 
-  type: LoadBalancer 
+    nodePort: 30556
+  type: NodePort 
   selector:
     app: ${project.artifactId}
