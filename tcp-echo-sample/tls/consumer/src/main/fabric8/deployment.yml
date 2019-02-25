@@ -8,32 +8,40 @@ metadata:
     version: ${project.version}
     group: ${project.groupId}
   name: ${project.artifactId}
-  spec:
-    replicas: 1
-    template:
-      spec:
-        containers:
-          - image: ${project.artifactId}:latest
-            resources:
-              requests:
-                cpu: "0.2"
-  #              memory: 256Mi
-              limits:
-                cpu: "1.0"
-  #              memory: 256Mi
-            ports:
-            - containerPort: 5555
-              name: http
-              protocol: TCP
-            - containerPort: 5556
-              name: prometheus
-              protocol: TCP
-            - containerPort: 8080
-              name: jolokia
-              protocol: TCP
-            env:
-            - name: SPRING_APPLICATION_JSON
-              value: '{"server":{"tomcat":{"max-threads":1}}}'
+spec:
+  replicas: 1
+  selector:
+    app: ${project.artifactId}
+    provider: fabric8
+    group: ${project.groupId}
+  strategy:
+    rollingParams:
+      timeoutSeconds: 3600
+    type: Rolling
+  template:
+    spec:
+      containers:
+        - image: ${project.artifactId}:latest
+          resources:
+            requests:
+              cpu: "0.2"
+              memory: 256Mi
+            limits:
+              cpu: "1.0"
+              memory: 256Mi
+          ports:
+          - containerPort: 5555
+            name: tcp
+            protocol: TCP
+          - containerPort: 5556
+            name: tls-tcp
+            protocol: TCP
+          - containerPort: 8080
+            name: monitor-http
+            protocol: TCP
+          env:
+          - name: SPRING_APPLICATION_JSON
+            value: '{"server":{"tomcat":{"max-threads":1}}}'
   triggers:
     - type: ConfigChange
     - imageChangeParams:
