@@ -21,6 +21,7 @@ node('maven') {
             sh "oc project ${projectPrefix}-dev"
 
             sh "cat /var/lib/origin/openshift.local.config/master/admin.kubeconfig"
+            sh "cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
             
 
             // build maven
