@@ -100,9 +100,9 @@
         </executions>
       </plugin>
    	<plugin>
-        <groupId>org.jboss.redhat-fuse</groupId>
+        <groupId>io.fabric8</groupId>
         <artifactId>fabric8-maven-plugin</artifactId>
-        <version>${fuse.version}</version>
+        <version>3.5.39</version>
         <configuration>
             <generator>
                 <config>
