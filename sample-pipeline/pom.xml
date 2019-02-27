@@ -75,13 +75,13 @@
 			<plugin>
 		        <groupId>io.fabric8</groupId>
 		        <artifactId>fabric8-maven-plugin</artifactId>
-		        <version>3.5.39</version>
+		        <version>3.5.42</version>
 				<configuration>
 					<generator>
 						<config>
 							<spring-boot>
 								<fromMode>istag</fromMode>
-								<from>redhat-openjdk18-openshift:1.4</from>
+								<from>openshift/fuse7-java-openshift:1.2</from>
 							</spring-boot>
 						</config>
 					</generator>
