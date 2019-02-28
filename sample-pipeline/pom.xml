@@ -60,32 +60,34 @@
 
 	<build>
 		<plugins>
-			<!-- workaround for fabric plugin not supporting multiple environment directories and an all one -->
+			<!-- workaround for fabric plugin not supporting multiple environment 
+				directories and an all one -->
 			<plugin>
-		        <artifactId>maven-resources-plugin</artifactId>
-		        <version>3.1.0</version>
-		        <executions>
-		          <execution>
-		            <id>copy-resources</id>
-		            <!-- here the phase you need -->
-		            <phase>validate</phase>
-		            <goals>
-		              <goal>copy-resources</goal>
-		            </goals>
-		            <configuration>
-		              <overwrite>true</overwrite> 
-		              <outputDirectory>${basedir}/target/generated/fabric8</outputDirectory>
-		              <resources>          
-		                <resource>
-		                  <directory>src/main/fabric8/all</directory>
-		                  <directory>src/main/fabric8/${deployment.environment}</directory>
-		                </resource>
-		              </resources>              
-		            </configuration>            
-		          </execution>
-		        </executions>
-		      </plugin>
-		      
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<!-- here the phase you need -->
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/generated/fabric8</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main/fabric8/all</directory>
+								</resource>
+								<resource>
+									<directory>${basedir}/src/main/fabric8/${deployment.environment}</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.jboss.redhat-fuse</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -97,11 +99,11 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
-		        <groupId>io.fabric8</groupId>
-		        <artifactId>fabric8-maven-plugin</artifactId>
-		        <version>3.5.42</version>
+				<groupId>io.fabric8</groupId>
+				<artifactId>fabric8-maven-plugin</artifactId>
+				<version>3.5.42</version>
 				<configuration>
 					<resourceDir>${basedir}/target/generated/fabric8</resourceDir>
 					<generator>
