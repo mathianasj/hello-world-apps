@@ -27,7 +27,7 @@ node('maven') {
 
         stage('Deploy to dev') {
             // trigger deploy
-            sh "mvn fabric8:deploy"
+            sh "mvn fabric8:deploy -Ddeployment.environment=dev"
         }
 
         stage('Integration test') {
@@ -59,7 +59,7 @@ node('maven') {
 
             sh "mvn validate"
     
-            sh "mvn fabric8:resource-apply"
+            sh "mvn fabric8:resource-apply -Ddeployment.environment=qa"
         }
     }
 }
@@ -81,7 +81,7 @@ node('maven') {
 
             sh "mvn validate"
 
-            sh "mvn fabric8:resource-apply"
+            sh "mvn fabric8:resource-apply -Ddeployment.environment=prod"
         }
     }
 }
