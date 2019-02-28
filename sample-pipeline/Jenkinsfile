@@ -6,6 +6,7 @@ node('maven') {
     // Checkout Source Code.
     stage('Checkout Source') {
         checkout scm
+        stash name: "src", includes: "**/*"
     }
     
     dir("sample-pipeline") {
@@ -42,56 +43,45 @@ node('maven') {
 }
 
 stage('Request Approval for Promotion to QA') {
-    try {
-        userInput = input(
-            id: 'Proceed to QA', message: 'Deploy to QA?', parameters: [
-            [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
-            ])
-    } catch(err) { // input false
-        def user = err.getCauses()[0].getUser()
-        userInput = false
-        echo "Aborted by: [${user}]"
-    }
+    userInput = input(
+        id: 'Proceed to QA', message: 'Deploy to QA?', parameters: [
+        [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+        ])
 }
 
 node('maven') {    
-    dir("sample-pipeline") {
         stage("Deploy to QA") {
-            checkout scm
+            unstash "src"
 
-            // switch to qa project
-            sh "oc project ${projectPrefix}-qa"
+            dir("sample-pipeline") {
+                // switch to qa project
+                sh "oc project ${projectPrefix}-qa"
 
-            sh "mvn validate"
-    
-            sh "mvn fabric8:resource-apply"
+                sh "mvn validate"
+        
+                sh "mvn fabric8:resource-apply"
+            }
         }
     }
 }
 
 stage('Request Approval for Promotion to PROD') {
-    try {
-        userInput = input(
-            id: 'Proceed to Prod', message: 'Deploy to Prod?', parameters: [
-            [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
-            ])
-    } catch(err) { // input false
-        def user = err.getCauses()[0].getUser()
-        userInput = false
-        echo "Aborted by: [${user}]"
-    }
+    userInput = input(
+        id: 'Proceed to Prod', message: 'Deploy to Prod?', parameters: [
+        [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+        ])
 }
 
 node('maven') {    
-    dir("sample-pipeline") {
-        stage("Deploy to Prod") {
-            checkout scm
+    stage("Deploy to Prod") {
+        unstash "src"
 
+        dir("sample-pipeline") {
             // switch to prod project
             sh "oc project ${projectPrefix}-prod"
 
             sh "mvn validate"
-    
+
             sh "mvn fabric8:resource-apply"
         }
     }
