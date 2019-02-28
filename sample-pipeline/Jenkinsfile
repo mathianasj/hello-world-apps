@@ -50,17 +50,16 @@ stage('Request Approval for Promotion to QA') {
 }
 
 node('maven') {    
-        stage("Deploy to QA") {
-            unstash "src"
+    stage("Deploy to QA") {
+        unstash "src"
 
-            dir("sample-pipeline") {
-                // switch to qa project
-                sh "oc project ${projectPrefix}-qa"
+        dir("sample-pipeline") {
+            // switch to qa project
+            sh "oc project ${projectPrefix}-qa"
 
-                sh "mvn validate"
-        
-                sh "mvn fabric8:resource-apply"
-            }
+            sh "mvn validate"
+    
+            sh "mvn fabric8:resource-apply"
         }
     }
 }
