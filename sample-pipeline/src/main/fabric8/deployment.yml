@@ -2,7 +2,7 @@ spec:
   template:
     spec:
       containers:
-        - 
+        - image: sample-pipeline-dev/sample-pipeline:latest
           resources:
             requests:
               cpu: "0.2"

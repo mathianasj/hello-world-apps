@@ -20,15 +20,8 @@ node('maven') {
             // switch to dev project
             sh "oc project ${projectPrefix}-dev"
 
-            sh "cat /var/lib/origin/openshift.local.config/master/admin.kubeconfig"
-            sh "cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-            
-
-            // build maven
+            // build with maven and run unit tests
             sh 'mvn clean package'
-
-            // run build
-            sh "mvn fabric8:build -e -X"
         }
 
         stage('Deploy to dev') {
@@ -68,8 +61,10 @@ node('maven') {
 
             // switch to qa project
             sh "oc project ${projectPrefix}-qa"
+
+            sh "mvn validate"
     
-            sh "mvn fabric8:deploy"
+            sh "mvn fabric8:resource-apply"
         }
     }
 }
@@ -94,8 +89,10 @@ node('maven') {
 
             // switch to prod project
             sh "oc project ${projectPrefix}-prod"
+
+            sh "mvn validate"
     
-            sh "mvn fabric8:deploy"
+            sh "mvn fabric8:resource-apply"
         }
     }
 }
